@@ -13,31 +13,25 @@ export const createExchange = async (req, res, next) => {
       date_time,
       fxRequirement,
     } = req.body;
-    // const minuteHistoricalData = await getMinuteHistoricalData(
-    //   buyCurrency,
-    //   sellCurrency,
-    //   date_time
-    // );
-    const minuteHistoricalData = await getPriceAtTime(
+
+    const priceAtTime = await getPriceAtTime(
       buyCurrency,
       sellCurrency,
       date_time
     );
 
-    console.log(minuteHistoricalData);
-
-    if (!minuteHistoricalData) {
-      const error = new Error("Failed to fetch minute historical data");
+    if (!priceAtTime) {
+      const error = new Error("Failed to fetch price at time");
       error.statusCode = 500;
       throw error;
     }
 
     // Calculate mid-market rate
     const quote = {
-      high: minuteHistoricalData.high,
-      low: minuteHistoricalData.low,
-      open: minuteHistoricalData.open,
-      close: minuteHistoricalData.close,
+      high: Number(priceAtTime.high),
+      low: Number(priceAtTime.low),
+      open: Number(priceAtTime.open),
+      close: Number(priceAtTime.close),
     };
     const midMarketRate = calculateMidMarketRate(quote);
 

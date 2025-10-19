@@ -28,10 +28,10 @@ export const getPriceAtTime = async (sellCurrency, buyCurrency, date_time) => {
     return {
       currency: `${currency}`,
       date_time: date_time,
-      open: candle.open,
-      high: candle.high,
-      low: candle.low,
-      close: candle.close,
+      open: Number(candle.open),
+      high: Number(candle.high),
+      low: Number(candle.low),
+      close: Number(candle.close),
       request_time: new Date().toISOString(),
     };
   } catch (error) {
