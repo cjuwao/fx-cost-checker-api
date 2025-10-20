@@ -43,7 +43,7 @@ export const simulateFXPath = (
     Array.isArray(historicalData.at(-1)) ? historicalData.at(-1)[0] : new Date()
   );
 
-  const path = [[toISODate(lastDate), rate]];
+  const path = [[toISODate(lastDate), Number(rate)]];
 
   for (let t = 1; t <= horizon; t++) {
     const z = randn();

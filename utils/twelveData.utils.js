@@ -39,3 +39,32 @@ export const getPriceAtTime = async (sellCurrency, buyCurrency, date_time) => {
     return null;
   }
 };
+
+export const getDailyRatesForPastYear = async (sellCurrency, buyCurrency) => {
+  const currency = `${buyCurrency}/${sellCurrency}`;
+  // Compute date range: 1 year ago → today
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setFullYear(startDate.getFullYear() - 1);
+
+  // Add 1 day so the end date is inclusive
+  endDate.setDate(endDate.getDate() + 1);
+
+  const startStr = startDate.toISOString().split("T")[0];
+  const endStr = endDate.toISOString().split("T")[0];
+
+  const url = `${TWELVE_DATA_URL}?symbol=${encodeURIComponent(
+    currency
+  )}&interval=1day&start_date=${encodeURIComponent(
+    startStr
+  )}&end_date=${encodeURIComponent(endStr)}&apikey=${TWELVE_DATA_API_KEY}`;
+
+  try {
+    const response = await axios.get(url);
+    const data = response.data.values;
+    return data;
+  } catch (error) {
+    console.error("Error fetching daily rates for past year:", error.message);
+    return null;
+  }
+};
