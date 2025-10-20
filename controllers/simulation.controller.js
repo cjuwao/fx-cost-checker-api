@@ -23,9 +23,7 @@ export const createSimulation = async (req, res, next) => {
       };
       return [quote.datetime, calculateMidMarketRate(numericQuote).toFixed(4)];
     });
-    console.log("DAILY RATES", dailyRatesData);
     const simulation = simulateFXPath(dailyRatesData);
-    console.log("simulation", simulation);
     res.status(201).json({
       success: true,
       message: "Simulation created successfully",
