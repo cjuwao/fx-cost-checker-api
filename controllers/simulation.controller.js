@@ -21,13 +21,21 @@ export const createSimulation = async (req, res, next) => {
         low: Number(quote.low),
         close: Number(quote.close),
       };
-      return [quote.datetime, calculateMidMarketRate(numericQuote).toFixed(4)];
+      return [
+        quote.datetime,
+        Number(calculateMidMarketRate(numericQuote).toFixed(4)),
+      ];
     });
     const simulation = simulateFXPath(dailyRatesData);
+    const result = {
+      historical: dailyRatesData,
+      simulation: simulation,
+    };
+
     res.status(201).json({
       success: true,
       message: "Simulation created successfully",
-      data: simulation,
+      data: result,
     });
   } catch (error) {
     next(error);
